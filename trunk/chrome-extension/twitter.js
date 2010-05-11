@@ -1,19 +1,16 @@
 /**
- * @fileoverview Content script that is executed on Facebook pages.
- * Performs translations on various elements in the DOM. The content script is
- * executed on document complete, but Facebook does some additional manipulation
- * after the initial load. This means we need to listen for events to continue
- * doing translation.
+ * @fileoverview Content script that is executed on Twitter pages.
  * @author nav@google.com (Nav Jagpal)
  */
 
+if (window.location.hostname.lastIndexOf('twitter.com') == -1) {
+  console.log('Not twitter, skipping twitter translation.');
+  return;
+}
+
 /** List of class types we want to translate. */
 var CLASSES_TO_TRANSLATE = [
-    'comment_actual_text', /* User comments on posts, pics, etc. */
-    'UIStory_Message', /* Status updates. */
-    'UIStoryAttachment_Copy', /* The partial text from sharing articles. */
-    'description', /* Photo album descriptions. */
-    'uiStreamMessage' /* Some other comments. */
+    'entry-content', /* Tweet. */
 ];
 
 /**
