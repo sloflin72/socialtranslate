@@ -6,8 +6,8 @@
   "background_page": "background.html",
   "content_scripts": [
    {
-     "matches": ["http://www.facebook.com/*",
-                 "https://www.facebook.com/*"],
+     "matches": ["http://*.facebook.com/*",
+                 "https://*.facebook.com/*"],
      "js": ["translate.js"]
    }
   ],
