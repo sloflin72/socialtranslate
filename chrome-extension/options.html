@@ -1,0 +1,117 @@
+<html>
+  <head>
+    <title>Social Translate Options</title>
+
+    <script type="text/javascript">
+
+      /* Populates the select boxes with a list of languages, and calls
+         restoreOptions(). */
+      function onLoad() {
+        chrome.extension.sendRequest({action: "languages"}, function(response) {
+            var primarySelect = document.getElementById('primary_language');
+            var secondarySelect = document.getElementById(
+              'secondary_languages');
+            for (var language in response.languages) {
+              var option = document.createElement('option');
+              option.text = language;
+              option.value = language;
+              primarySelect.appendChild(option);
+
+              option = document.createElement('option');
+              option.text = language;
+              option.value = language;
+              secondarySelect.appendChild(option);
+            }
+          restoreOptions();
+          });
+      }
+
+     function restoreOptions() {
+       var primaryLanguage = localStorage['primary_language'];
+       var secondaryLanguages = localStorage['secondary_languages'];
+       if (!primaryLanguage || !secondaryLanguages) {
+         return;
+       }
+
+       secondaryLanguages = JSON.parse(secondaryLanguages);
+
+       var select = document.getElementById('primary_language');
+       for (var i = 0; i < select.children.length; i++) {
+         var child = select.children[i];
+         if (child.value == primaryLanguage) {
+           child.selected = 'true';
+           break;
+         }
+       }
+       select = document.getElementById('secondary_languages');
+       for (var i = 0; i < select.children.length; i++) {
+         var child = select.children[i];
+         for (var j = 0; j < secondaryLanguages.length; j++) {
+           if (child.value == secondaryLanguages[j]) {
+             child.selected = 'true';
+             break;
+           }
+         }
+       }
+     }
+
+     function saveOptions() {
+       var select = document.getElementById('primary_language');
+       var language = select.children[select.selectedIndex].value;
+       localStorage['primary_language'] = language;
+
+       var secondaryLanguages = [];
+       select = document.getElementById('secondary_languages');
+       for (var i = 0; i < select.children.length; i++) {
+         var child = select.children[i];
+         if (child.selected == true) {
+           secondaryLanguages.push(child.value);
+         }
+       }
+
+       localStorage['secondary_languages'] = JSON.stringify(secondaryLanguages);
+
+       var status = document.getElementById('status');
+       status.innerHTML = 'Saved.';
+       setTimeout(function() {
+           status.innerHTML = '';
+       }, 750);
+     }
+
+    </script>
+  </head>
+
+  <body onload="onLoad()">
+
+    <h2>Translation Options</h2>
+
+    <div>
+      <div class="name">
+        <b>Primary Language</b> - Text will be translated into this
+        language.
+      <div class="option">
+        <select id="primary_language">
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <div>
+        <b>Secondary Languages</b> - Text that match any of your secondary
+        languages will not be translated. This is useful for users that speak
+        multiple languages and would like to have their event streams displayed
+        in several languages.
+      </div>
+      <div>
+        <select id="secondary_languages" MULTIPLE size="10">
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <button onclick="saveOptions()">Save</button>
+    </div>
+
+    <div id="status"></div>
+  </body>
+</html>
