@@ -9,7 +9,9 @@
      "matches": ["http://*.facebook.com/*",
                  "https://*.facebook.com/*",
                  "http://twitter.com/*",
-                 "http://*.twitter.com/*"],
+                 "http://*.twitter.com/*",
+                 "https://twitter.com/*",
+                 "https://*.twitter.com/*"],
      "js": ["facebook.js", "twitter.js"]
    }
   ],
