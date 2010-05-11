@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <script type="text/javascript" src="http://www.google.com/jsapi">
+    </script>
+    <script type="text/javascript">
+
+      /* Initialize preferences. */
+      if (!localStorage['primary_language']) {
+        // If this hasn't been set already by the user, we default to english.
+        // Apologies to all those that don't speak English.
+        localStorage['primary_language'] = 'ENGLISH';
+      }
+      if (!localStorage['secondary_languages']) {
+        // Secondary languages are empty by default.
+        localStorage['secondary_languages'] = JSON.stringify([]);
+      }
+
+      /* Load the Google Language Translation API. */
+      google.load("language", "1");
+
+      /* Setup the content script -> background page API. */
+      chrome.extension.onRequest.addListener(
+          function(request, sender, sendResponse) {
+            if (request.action == "translate") {
+              google.language.translate(
+                request.msg, "",
+                google.language.Languages[localStorage['primary_language']],
+                function(result) {
+                  if (!result.error && result.detectedSourceLanguage &&
+                    result.detectedSourceLanguage !=
+                    localStorage['primary_language']) {
+                    var secondaryLanguages = JSON.parse(
+                      localStorage['secondary_languages']);
+                    for (var i = 0; i < secondaryLanguages.length; i++) {
+                      var language = secondaryLanguages[i];
+                      if (result.detectedSourceLanguage ==
+                        google.language.Languages[language]) {
+                        console.log("One of secondary languages");
+                        sendResponse({translation: request.msg});
+                        return;
+                      }
+                    }
+                    sendResponse(result);
+                  }
+                  sendResponse({translation: request.msg});
+                });
+            } else if (request.action == "languages") {
+              console.log("Request for languages.");
+              sendResponse({languages: google.language.Languages});
+            } else {
+              console.log("Invalid action given.");
+            }
+          });
+
+    </script>
+  </head>
+</html>
