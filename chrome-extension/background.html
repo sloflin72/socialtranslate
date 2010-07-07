@@ -7,6 +7,11 @@
       /* Load the Google Language Translation API. */
       google.load("language", "1");
 
+      function onPageActionClick(tab) {
+        console.log("Page action clicked");
+        chrome.tabs.sendRequest(tab.id, {action: "toggle"});
+      }
+
       function initialize() {
         /* Initialize preferences. */
         if (!localStorage['primary_language']) {
@@ -44,7 +49,7 @@
                   function(result) {
                     if (!result.error && result.detectedSourceLanguage &&
                       result.detectedSourceLanguage !=
-                      localStorage['primary_language']) {
+                      google.language.Languages[localStorage['primary_language']]) {
                       var secondaryLanguages = JSON.parse(
                         localStorage['secondary_languages']);
                       for (var i = 0; i < secondaryLanguages.length; i++) {
@@ -56,6 +61,12 @@
                           return;
                         }
                       }
+                      console.log("Performed a translation");
+                      console.log("Detected lang " +
+                        result.detectedSourceLanguage);
+                      result.translated = true;
+                      console.log("Primary lang " +
+                          google.language.Languages[localStorage['primary_language']]);
                       sendResponse(result);
                     }
                     sendResponse({translation: request.msg});
@@ -63,10 +74,18 @@
               } else if (request.action == "languages") {
                 console.log("Request for languages.");
                 sendResponse({languages: google.language.Languages});
+              } else if (request.action == "showIcon") {
+                console.log("Showing pageaction icon on tab " + sender.tab.id);
+                chrome.pageAction.show(sender.tab.id);
+              } else if (request.action == "hideIcon") {
+                console.log("Hiding pageaction icon");
+                chrome.pageAction.hide(sender.tab.id);
               } else {
                 console.log("Invalid action given.");
               }
             });
+
+          chrome.pageAction.onClicked.addListener(onPageActionClick);
       }
 
       google.setOnLoadCallback(initialize);

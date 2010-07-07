@@ -12,6 +12,27 @@ if (window.location.hostname.lastIndexOf('facebook.com') == -1) {
   return;
 }
 
+console.log('Facebook translation extension is running.');
+
+chrome.extension.sendRequest({action: "hideIcon"}, function(r) {});
+
+function onRequest(request) {
+  if (request.action == "toggle") {
+    console.log("Request to toggle original text display.");
+    var elements = document.getElementsByName("originalText");
+    for (var i = 0; i < elements.length; i++) {
+      var e = elements[i];
+      if (e.style.display == "none") {
+        e.style.display = "block";
+      } else {
+        e.style.display = "none";
+      }
+    }
+  }
+}
+
+chrome.extension.onRequest.addListener(onRequest);
+
 /** List of class types we want to translate. */
 var CLASSES_TO_TRANSLATE = [
     'comment_actual_text', /* User comments on posts, pics, etc. */
@@ -48,6 +69,17 @@ function translate(element) {
       {action: "translate", msg: text},
       function(response) {
         element.innerHTML = response.translation;
+        if (response.translated == true) {
+          chrome.extension.sendRequest({action: "showIcon"}, function(r) {});
+          var imageElement = document.createElement("img");
+          imageElement.src = chrome.extension.getURL("translate19.png");
+          element.appendChild(imageElement);
+          var originalText = document.createElement("div");
+          originalText.style.display = "none";
+          originalText.innerHTML = "<i>" + text + "</i>";
+          element.appendChild(originalText);
+          originalText.setAttribute("name", "originalText");
+        }
       });
 }
 
