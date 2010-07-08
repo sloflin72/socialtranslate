@@ -16,7 +16,7 @@
                  "http://*.twitter.com/*",
                  "https://twitter.com/*",
                  "https://*.twitter.com/*"],
-     "js": ["facebook.js"]
+     "js": ["translate.js"]
    }
   ],
   "permissions": [

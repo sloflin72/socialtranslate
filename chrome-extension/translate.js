@@ -1,18 +1,30 @@
 /**
- * @fileoverview Content script that is executed on Facebook pages.
+ * @fileoverview Content script that is executed on Facebook and Twitter pages.
  * Performs translations on various elements in the DOM. The content script is
- * executed on document complete, but Facebook does some additional manipulation
+ * executed on document complete, but some sites do some additional manipulation
  * after the initial load. This means we need to listen for events to continue
  * doing translation.
  * @author nav@google.com (Nav Jagpal)
  */
 
-if (window.location.hostname.lastIndexOf('facebook.com') == -1) {
-  console.log('Not Facebook, skipping Facebook translation.');
-  return;
-}
+/** List of class types we want to translate. */
+var CLASSES_TO_TRANSLATE = [];
 
-console.log('Facebook translation extension is running.');
+if (window.location.hostname.lastIndexOf('twitter.com') != -1) {
+  console.log('Preparing for Twitter translations.');
+  CLASSES_TO_TRANSLATE = [
+    'entry-content', /* Tweet. */
+  ];
+} else if (window.location.hostname.lastIndexOf('facebook.com') != -1) {
+  console.log('Preparing for Facebook translations.');
+  CLASSES_TO_TRANSLATE = [
+    'comment_actual_text', /* User comments on posts, pics, etc. */
+    'UIStory_Message', /* Status updates. */
+    'UIStoryAttachment_Copy', /* The partial text from sharing articles. */
+    'description', /* Photo album descriptions. */
+    'uiStreamMessage' /* Some other comments. */
+  ];
+}
 
 chrome.extension.sendRequest({action: "hideIcon"}, function(r) {});
 
@@ -32,15 +44,6 @@ function onRequest(request) {
 }
 
 chrome.extension.onRequest.addListener(onRequest);
-
-/** List of class types we want to translate. */
-var CLASSES_TO_TRANSLATE = [
-    'comment_actual_text', /* User comments on posts, pics, etc. */
-    'UIStory_Message', /* Status updates. */
-    'UIStoryAttachment_Copy', /* The partial text from sharing articles. */
-    'description', /* Photo album descriptions. */
-    'uiStreamMessage' /* Some other comments. */
-];
 
 /**
  * Find all elements that match our translation criteria and translate.
