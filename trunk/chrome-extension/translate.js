@@ -97,22 +97,18 @@ function translate(element) {
           if (SHOW_ORIGINAL == false) {
             originalText.style.display = "none";
           }
-          originalText.innerHTML = "<i>" + text + "</i>";
+          originalText.innerHTML = "<font color='gray'>" + text + "</font>";
           originalText.setAttribute("name", "originalText");
 
           /* Do not translate elements with className of actorName. These are
            * links to user profiles that include user names. We never want to
            * translate a username.
            * Facebook specific. */
-          var originalNode = originalText.children[0];  // Skip over the <i>.
+          var originalNode = originalText.children[0];  // Skip over the <font>.
           for (i = 0; i < originalNode.children.length; i++) {
             if (originalNode.children[i].className == "actorName") {
               element.children[i].innerHTML = originalNode.children[i].innerHTML;
             }
-          }
-
-          if (originalNode.innerHTML == element.innerHTML) {
-            console.log('Not translated.');
           }
 
           element.appendChild(imageElement);
