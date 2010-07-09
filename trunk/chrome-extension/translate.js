@@ -7,8 +7,12 @@
  * @author nav@google.com (Nav Jagpal)
  */
 
-/** List of class types we want to translate. */
+/* List of class types we want to translate. */
 var CLASSES_TO_TRANSLATE = [];
+
+/* Whether or not to show the original text. This is toggled by the pageAction
+ * icon. */
+var SHOW_ORIGINAL = false;
 
 if (window.location.hostname.lastIndexOf('twitter.com') != -1) {
   console.log('Preparing for Twitter translations.');
@@ -31,10 +35,15 @@ chrome.extension.sendRequest({action: "hideIcon"}, function(r) {});
 function onRequest(request) {
   if (request.action == "toggle") {
     console.log("Request to toggle original text display.");
+    if (SHOW_ORIGINAL == true) {
+      SHOW_ORIGINAL = false;
+    } else {
+      SHOW_ORIGINAL = true;
+    }
     var elements = document.getElementsByName("originalText");
     for (var i = 0; i < elements.length; i++) {
       var e = elements[i];
-      if (e.style.display == "none") {
+      if (SHOW_ORIGINAL == true) {
         e.style.display = "block";
       } else {
         e.style.display = "none";
@@ -78,7 +87,9 @@ function translate(element) {
           imageElement.src = chrome.extension.getURL("translate19.png");
           element.appendChild(imageElement);
           var originalText = document.createElement("div");
-          originalText.style.display = "none";
+          if (SHOW_ORIGINAL == false) {
+            originalText.style.display = "none";
+          }
           originalText.innerHTML = "<i>" + text + "</i>";
           element.appendChild(originalText);
           originalText.setAttribute("name", "originalText");
