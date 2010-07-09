@@ -43,34 +43,55 @@
                   sendResponse({translation: request.msg});
                   return;
                 }
-                google.language.translate(
-                  request.msg, "",
-                  google.language.Languages[localStorage['primary_language']],
-                  function(result) {
-                    if (!result.error && result.detectedSourceLanguage &&
-                      result.detectedSourceLanguage !=
-                      google.language.Languages[localStorage['primary_language']]) {
-                      var secondaryLanguages = JSON.parse(
-                        localStorage['secondary_languages']);
-                      for (var i = 0; i < secondaryLanguages.length; i++) {
-                        var language = secondaryLanguages[i];
-                        if (result.detectedSourceLanguage ==
-                          google.language.Languages[language]) {
-                          console.log("One of secondary languages");
-                          sendResponse({translation: request.msg});
-                          return;
-                        }
-                      }
-                      console.log("Performed a translation");
-                      console.log("Detected lang " +
-                        result.detectedSourceLanguage);
-                      result.translated = true;
-                      console.log("Primary lang " +
-                          google.language.Languages[localStorage['primary_language']]);
-                      sendResponse(result);
-                    }
+
+                google.language.detect(request.msg, function(detection_result) {
+                  if (detection_result.error) {
+                    console.log("Detection error.");
                     sendResponse({translation: request.msg});
-                  });
+                    return;
+                  }
+
+                  if (detection_result.isReliable == false) {
+                    console.log("Unreliable detection.");
+                    sendResponse({translation: request.msg});
+                    return;
+                    }
+                  console.log("Reliable translation");
+
+                  if (detection_result.language ==
+                      google.language.Languages[localStorage['primary_language']]) {
+                    console.log("Primary language, not translating.");
+                    sendResponse({translation: request.msg});
+                    return;
+                  }
+
+                  var secondaryLanguages = JSON.parse(
+                    localStorage['secondary_languages']);
+                  for (var i = 0; i < secondaryLanguages.length; i++) {
+                    var language = secondaryLanguages[i];
+                    if (detection_result.language ==
+                        google.language.Languages[language]) {
+                      console.log("One of secondary languages");
+                      sendResponse({translation: request.msg});
+                      return;
+                    }
+                  }
+
+                  google.language.translate(
+                    request.msg,
+                    detection_result.language,
+                    google.language.Languages[localStorage['primary_language']],
+                    function(result) {
+                      if (result.error) {
+                        console.log("Error translating: " +
+                          result.error.message);
+                        sendResponse({translation: request.msg});
+                        return;
+                      }
+                      result.translated = true;
+                      sendResponse(result);
+                    });
+                });
               } else if (request.action == "languages") {
                 console.log("Request for languages.");
                 sendResponse({languages: google.language.Languages});
