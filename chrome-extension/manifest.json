@@ -5,7 +5,7 @@
   "description": "Social translation.",
   "background_page": "background.html",
   "page_action": {
-    "default_icon": "translate19.png",
+    "default_icon": "icon19.png",
     "default_title": "Toggle Translation"
   },
   "content_scripts": [

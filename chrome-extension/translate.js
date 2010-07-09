@@ -92,7 +92,7 @@ function translate(element) {
           element.innerHTML = response.translation;
           chrome.extension.sendRequest({action: "showIcon"}, function(r) {});
           var imageElement = document.createElement("img");
-          imageElement.src = chrome.extension.getURL("translate19.png");
+          imageElement.src = chrome.extension.getURL("icon19.png");
           var originalText = document.createElement("div");
           if (SHOW_ORIGINAL == false) {
             originalText.style.display = "none";
