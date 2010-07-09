@@ -26,7 +26,8 @@ if (window.location.hostname.lastIndexOf('twitter.com') != -1) {
     'UIStory_Message', /* Status updates. */
     'UIStoryAttachment_Copy', /* The partial text from sharing articles. */
     'description', /* Photo album descriptions. */
-    'uiStreamMessage' /* Some other comments. */
+    'uiStreamMessage', /* Some other comments. */
+    'mobile_status', /* Profile status, top of the profile page. */
   ];
 }
 
@@ -64,7 +65,6 @@ for (var i in CLASSES_TO_TRANSLATE) {
   var elements = document.getElementsByClassName(clss);
   for (var j = 0; j < elements.length; j++) {
     var text = elements[j].innerHTML;
-    console.log("Translating " + text);
     var element = elements[j];
     translate(element);
   }
@@ -85,13 +85,11 @@ function translate(element) {
           chrome.extension.sendRequest({action: "showIcon"}, function(r) {});
           var imageElement = document.createElement("img");
           imageElement.src = chrome.extension.getURL("translate19.png");
-          element.appendChild(imageElement);
           var originalText = document.createElement("div");
           if (SHOW_ORIGINAL == false) {
             originalText.style.display = "none";
           }
           originalText.innerHTML = "<i>" + text + "</i>";
-          element.appendChild(originalText);
           originalText.setAttribute("name", "originalText");
 
           /* Do not translate elements with className of actorName. These are
@@ -104,6 +102,13 @@ function translate(element) {
               element.children[i].innerHTML = originalNode.children[i].innerHTML;
             }
           }
+
+          if (originalNode.innerHTML == element.innerHTML) {
+            console.log('Not translated.');
+          }
+
+          element.appendChild(imageElement);
+          element.appendChild(originalText);
         }
       });
 }
