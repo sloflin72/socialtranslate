@@ -80,8 +80,8 @@ function translate(element) {
   chrome.extension.sendRequest(
       {action: "translate", msg: text},
       function(response) {
-        element.innerHTML = response.translation;
         if (response.translated == true) {
+          element.innerHTML = response.translation;
           chrome.extension.sendRequest({action: "showIcon"}, function(r) {});
           var imageElement = document.createElement("img");
           imageElement.src = chrome.extension.getURL("translate19.png");
@@ -93,6 +93,17 @@ function translate(element) {
           originalText.innerHTML = "<i>" + text + "</i>";
           element.appendChild(originalText);
           originalText.setAttribute("name", "originalText");
+
+          /* Do not translate elements with className of actorName. These are
+           * links to user profiles that include user names. We never want to
+           * translate a username.
+           * Facebook specific. */
+          var originalNode = originalText.children[0];  // Skip over the <i>.
+          for (i = 0; i < originalNode.children.length; i++) {
+            if (originalNode.children[i].className == "actorName") {
+              element.children[i].innerHTML = originalNode.children[i].innerHTML;
+            }
+          }
         }
       });
 }
