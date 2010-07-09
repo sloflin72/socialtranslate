@@ -12,6 +12,11 @@
         chrome.tabs.sendRequest(tab.id, {action: "toggle"});
       }
 
+      function onTabUpdate(tabId, changeInfo, tab) {
+        console.log("Tab updated, get the background page to check state.");
+        chrome.tabs.sendRequest(tab.id, {action: "checkState"});
+      }
+
       function initialize() {
         /* Initialize preferences. */
         if (!localStorage['primary_language']) {
@@ -56,7 +61,8 @@
                     sendResponse({translation: request.msg});
                     return;
                     }
-                  console.log("Reliable translation");
+
+                  console.log("Reliable translation.");
 
                   if (detection_result.language ==
                       google.language.Languages[localStorage['primary_language']]) {
@@ -76,6 +82,8 @@
                       return;
                     }
                   }
+
+                  console.log("Translating " + request.msg);
 
                   google.language.translate(
                     request.msg,
@@ -107,6 +115,7 @@
             });
 
           chrome.pageAction.onClicked.addListener(onPageActionClick);
+          chrome.tabs.onUpdated.addListener(onTabUpdate);
       }
 
       google.setOnLoadCallback(initialize);

@@ -31,6 +31,7 @@ if (window.location.hostname.lastIndexOf('twitter.com') != -1) {
   ];
 }
 
+console.log("Trying to hide icon");
 chrome.extension.sendRequest({action: "hideIcon"}, function(r) {});
 
 function onRequest(request) {
@@ -49,6 +50,13 @@ function onRequest(request) {
       } else {
         e.style.display = "none";
       }
+    }
+  } else if (request.action == "checkState") {
+    console.log("checking state.");
+    var elements = document.getElementsByName("originalText");
+    if (elements.length == 0) {
+      console.log("Page was cleared, resetting state.");
+      chrome.extension.sendRequest({action: "hideIcon"});
     }
   }
 }
