@@ -53,6 +53,15 @@
            }
          }
        }
+
+       select = document.getElementById('reliable');
+       for (var i = 0; i < select.children.length; i++) {
+         var child = select.children[i];
+         if (child.value == localStorage['reliable']) {
+           child.selected = 'true';
+           break;
+         }
+       }
      }
 
      function saveOptions() {
@@ -71,6 +80,10 @@
 
        localStorage['secondary_languages'] = JSON.stringify(secondaryLanguages);
 
+       select = document.getElementById('reliable');
+       var option = select.children[select.selectedIndex];
+       localStorage['reliable'] = option.value;
+
        var status = document.getElementById('status');
        status.innerHTML = 'Saved.';
        setTimeout(function() {
@@ -87,8 +100,19 @@
 
     <div>
       <div class="name">
+        <b>Translation Quality</b> - Should we try harder, but be less accurate?
+      </div>
+      <div class="option">
+        <select id="reliable">
+          <option value="true">Reliable</option>
+          <option value="false">Aggressive</option>
+        </select>
+      </div> 
+    <div>
+      <div class="name">
         <b>Primary Language</b> - Text will be translated into this
         language.
+      </div>
       <div class="option">
         <select id="primary_language">
         </select>
