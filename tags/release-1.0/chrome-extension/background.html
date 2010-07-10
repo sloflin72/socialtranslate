@@ -1,0 +1,129 @@
+<html>
+  <head>
+    <script type="text/javascript" src="http://www.google.com/jsapi">
+    </script>
+    <script type="text/javascript">
+
+      /* Load the Google Language Translation API. */
+      google.load("language", "1");
+
+      function onPageActionClick(tab) {
+        console.log("Page action clicked.");
+        chrome.tabs.sendRequest(tab.id, {action: "toggle"});
+      }
+
+      function onTabUpdate(tabId, changeInfo, tab) {
+        console.log("Tab updated, get the background page to check state.");
+        chrome.tabs.sendRequest(tab.id, {action: "checkState"});
+      }
+
+      function initialize() {
+        /* Initialize preferences. */
+        if (!localStorage['primary_language']) {
+          var languageCode = window.navigator.language.slice(0, 2);
+          for (var key in google.language.Languages) {
+            if (google.language.Languages[key] == languageCode) {
+              localStorage['primary_language'] = key;
+              console.log('Setting primary language to ' + key);
+              break;
+            }
+          }
+        }
+
+        if (!localStorage['secondary_languages']) {
+          // Secondary languages are empty by default.
+          localStorage['secondary_languages'] = JSON.stringify([]);
+        }
+
+        if (!localStorage['reliable']) {
+          // Do reliable translations by default.
+          localStorage['reliable'] = "true";
+        }
+
+        /* Setup the content script -> background page API. */
+        chrome.extension.onRequest.addListener(
+            function(request, sender, sendResponse) {
+              if (request.action == "translate") {
+                /* This could happen if we weren't able to auto detect the
+                 * user's primary language. In this case, we just return the
+                 * untranslated text.
+                 */
+                if (!localStorage['primary_language']) {
+                  console.log('No primary language, not translating.');
+                  sendResponse({translation: request.msg});
+                  return;
+                }
+
+                google.language.detect(request.msg, function(detection_result) {
+                  if (detection_result.error) {
+                    console.log("Detection error.");
+                    sendResponse({translation: request.msg});
+                    return;
+                  }
+
+                  if (localStorage['reliable'] == "true" &&
+                      detection_result.isReliable == false) {
+                    console.log("Unreliable detection.");
+                    sendResponse({translation: request.msg});
+                    return;
+                  }
+
+                  if (detection_result.language ==
+                      google.language.Languages[localStorage['primary_language']]) {
+                    console.log("Primary language, not translating.");
+                    sendResponse({translation: request.msg});
+                    return;
+                  }
+
+                  var secondaryLanguages = JSON.parse(
+                    localStorage['secondary_languages']);
+                  for (var i = 0; i < secondaryLanguages.length; i++) {
+                    var language = secondaryLanguages[i];
+                    if (detection_result.language ==
+                        google.language.Languages[language]) {
+                      console.log("One of secondary languages");
+                      sendResponse({translation: request.msg});
+                      return;
+                    }
+                  }
+
+                  console.log("Translating " + request.msg);
+
+                  google.language.translate(
+                    request.msg,
+                    detection_result.language,
+                    google.language.Languages[localStorage['primary_language']],
+                    function(result) {
+                      if (result.error) {
+                        console.log("Error translating: " +
+                          result.error.message);
+                        sendResponse({translation: request.msg});
+                        return;
+                      }
+                      result.translated = true;
+                      sendResponse(result);
+                    });
+                });
+              } else if (request.action == "languages") {
+                console.log("Request for languages.");
+                sendResponse({languages: google.language.Languages});
+              } else if (request.action == "showIcon") {
+                console.log("Showing pageaction icon on tab " + sender.tab.id);
+                chrome.pageAction.show(sender.tab.id);
+              } else if (request.action == "hideIcon") {
+                console.log("Hiding pageaction icon");
+                chrome.pageAction.hide(sender.tab.id);
+              } else {
+                console.log("Invalid action given.");
+              }
+            });
+
+          chrome.pageAction.onClicked.addListener(onPageActionClick);
+          chrome.tabs.onUpdated.addListener(onTabUpdate);
+      }
+
+      google.setOnLoadCallback(initialize);
+
+    </script>
+  </head>
+</html>

@@ -1,0 +1,29 @@
+{
+  "name": "Social Translate",
+  "icons": { "128": "icon128.png" },
+  "version": "1.0",
+  "description": "Social translation.",
+  "background_page": "background.html",
+  "page_action": {
+    "default_icon": "icon19.png",
+    "default_title": "Toggle Translation"
+  },
+  "content_scripts": [
+   {
+     "matches": ["http://*.facebook.com/*",
+                 "https://*.facebook.com/*",
+                 "http://twitter.com/*",
+                 "http://*.twitter.com/*",
+                 "https://twitter.com/*",
+                 "https://*.twitter.com/*"],
+     "js": ["translate.js"]
+   }
+  ],
+  "permissions": [
+    "http://ajax.googleapis.com/",
+    "tabs"
+  ],
+  "run_at": "document_end",
+  "options_page": "options.html"
+}
+
