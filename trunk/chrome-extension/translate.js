@@ -79,6 +79,24 @@ for (var i in CLASSES_TO_TRANSLATE) {
 }
 
 /**
+ * This function can be used for onclick events. It will
+ * toggle the display of the provided element.
+ * @param {element} element to toggle.
+ */
+function toggleOriginalTextHandler(element) {
+  return function() {
+    if (!element) {
+      return;
+    }
+    if (element.style.display == "none") {
+      element.style.display = "block";
+    } else {
+      element.style.display = "none";
+    }
+  };
+}
+
+/**
  * Translates the content of the given element.
  * @param {element} element dom element to translate.
  */
@@ -99,6 +117,8 @@ function translate(element) {
           }
           originalText.innerHTML = "<font color='gray'>" + text + "</font>";
           originalText.setAttribute("name", "originalText");
+
+          imageElement.onclick = toggleOriginalTextHandler(originalText);
 
           /* Do not translate elements with className of actorName. These are
            * links to user profiles that include user names. We never want to
