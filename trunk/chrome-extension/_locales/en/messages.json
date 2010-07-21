@@ -8,5 +8,35 @@
 },
 "DefaultTitle": {
   "message": "Toggle Translation"
+},
+"OptionsTitle": {
+  "message": "Social Translate Options"
+}, 
+"TranslationOptions": {
+  "message": "Translation Options"
+},
+"TransQuility": {
+  "message": "<b>Translation Quality</b> - Should we try harder, but be less accurate?"
+},
+"PrimaryLang": {
+  "message": "<b>Primary Language</b> - Text will be translated into this
+ language."
+},
+"SecondLang": {
+  "message": "<b>Secondary Languages</b> - Text that match any of your secondary
+ languages will not be translated. This is useful for users that speak
+ multiple languages and would like to have their event streams displayed
+ in several languages."
+},
+
+"reliable": {
+  "message": "Reliable"
+},
+"aggressive": {
+  "message": "Aggressive"
+},
+"savebutton": {
+  "message": "Save"
 }
+
 }
