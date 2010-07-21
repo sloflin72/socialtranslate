@@ -1,13 +1,30 @@
 <html>
   <head>
-    <title>Social Translate Options</title>
-
+    <title></title>
+	<script source src="i18n.js"> </script>
     <script type="text/javascript">
-
+      
+	  /* Used to set the options meune in a way that supports i18n. */
+	function AddReliableOptions() {
+		select = document.getElementById("reliable");
+		opt1 = new Option(chrome.i18n.getMessage("reliable"), "true");
+		opt2 = new Option(chrome.i18n.getMessage("aggressive"), "false");
+		select.add(opt1, null);
+		select.add(opt2, null);
+	  }
       /* Populates the select boxes with a list of languages, and calls
          restoreOptions(). */
       function onLoad() {
-        chrome.extension.sendRequest({action: "languages"}, function(response) {
+        document.title= chrome.i18n.getMessage("OptionsTitle");
+	   /* i18n functions linking to the message catalog */
+		i18nReplace("TranslationOptions");
+		i18nReplace("TransQuility");
+		i18nReplace("PrimaryLang");
+		i18nReplace("SecondLang");
+		i18nReplaceImpl('savebutton', 'savebutton', 'value');
+	   /* Enf of i18n functions linking to the message catalog */
+		AddReliableOptions();
+		chrome.extension.sendRequest({action: "languages"}, function(response) {
             var primarySelect = document.getElementById('primary_language');
             var secondarySelect = document.getElementById(
               'secondary_languages');
@@ -96,22 +113,18 @@
 
   <body onload="onLoad()">
 
-    <h2>Translation Options</h2>
+    <h2 id="TranslationOptions"></h2>
+	
 
     <div>
-      <div class="name">
-        <b>Translation Quality</b> - Should we try harder, but be less accurate?
+      <div class="name" id="TransQuility">
       </div>
       <div class="option">
         <select id="reliable">
-          <option value="true">Reliable</option>
-          <option value="false">Aggressive</option>
         </select>
       </div> 
     <div>
-      <div class="name">
-        <b>Primary Language</b> - Text will be translated into this
-        language.
+      <div class="name" id="PrimaryLang">
       </div>
       <div class="option">
         <select id="primary_language">
@@ -120,11 +133,7 @@
     </div>
 
     <div>
-      <div>
-        <b>Secondary Languages</b> - Text that match any of your secondary
-        languages will not be translated. This is useful for users that speak
-        multiple languages and would like to have their event streams displayed
-        in several languages.
+      <div id="SecondLang">
       </div>
       <div>
         <select id="secondary_languages" MULTIPLE size="10">
@@ -133,9 +142,8 @@
     </div>
 
     <div>
-      <button onclick="saveOptions()">Save</button>
-    </div>
-
+		<input type="button" onclick="saveOptions()" id="savebutton"></input>    
+	</div>
     <div id="status"></div>
   </body>
 </html>
