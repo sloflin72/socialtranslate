@@ -1,0 +1,12 @@
+﻿{
+"Name": {
+  "message": "Social Translate",
+  "description": "This is the title of the apps"
+},
+"Description": {
+  "message": "The Social Translate chrome extension automatically translates event streams and friends’ comments on social network sites."
+},
+"DefaultTitle": {
+  "message": "Toggle Translation"
+}
+}
