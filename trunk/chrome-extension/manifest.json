@@ -1,12 +1,13 @@
 {
-  "name": "Social Translate",
+  "name": "__MSG_Name__",
   "icons": { "128": "icon128.png" },
-  "version": "1.0",
-  "description": "Social translation.",
+  "version": "1.0.1",
+  "description": "__MSG_Description__",
   "background_page": "background.html",
+  "default_locale": "en",
   "page_action": {
     "default_icon": "icon19.png",
-    "default_title": "Toggle Translation"
+    "default_title": "__MSG_DefaultTitle__"
   },
   "content_scripts": [
    {
