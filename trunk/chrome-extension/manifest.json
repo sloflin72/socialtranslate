@@ -16,7 +16,9 @@
                  "http://twitter.com/*",
                  "http://*.twitter.com/*",
                  "https://twitter.com/*",
-                 "https://*.twitter.com/*"],
+                 "https://*.twitter.com/*",
+                 "http://www.google.com/profiles/*",
+                 "https://www.google.com/profiles/*"],
      "js": ["translate.js"]
    }
   ],
