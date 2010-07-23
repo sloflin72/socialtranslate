@@ -29,6 +29,14 @@ if (window.location.hostname.lastIndexOf('twitter.com') != -1) {
     'uiStreamMessage', /* Some other comments. */
     'mobile_status', /* Profile status, top of the profile page. */
   ];
+} else if (window.location.href.lastIndexOf('www.google.com/profiles') != -1) {
+  console.log('Preparing for Google Profile translations.');
+  CLASSES_TO_TRANSLATE = [
+    'CSS_UPDATES_UCW_COMMENT_SPAN', /* Comments. */
+    'CSS_UPDATES_UCW_UPDATE_ANNOTATION_CONTENT',
+    'CSS_UPDATES_UCW_UPDATE_TITLE',
+    'CSS_UPDATES_UCW_UPDATE_BODY_TEXT',
+  ];
 }
 
 console.log("Trying to hide icon");
