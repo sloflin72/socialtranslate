@@ -28,6 +28,8 @@ if (window.location.hostname.lastIndexOf('twitter.com') != -1) {
     'description', /* Photo album descriptions. */
     'uiStreamMessage', /* Some other comments. */
     'mobile_status', /* Profile status, top of the profile page. */
+    'data', /* Event descriptions. */
+    'commentContent', /* Comments on events. */
   ];
 } else if (window.location.href.lastIndexOf('www.google.com/profiles') != -1) {
   console.log('Preparing for Google Profile translations.');
