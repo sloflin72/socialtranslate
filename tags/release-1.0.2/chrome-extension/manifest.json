@@ -1,0 +1,32 @@
+{
+  "name": "__MSG_Name__",
+  "icons": { "128": "icon128.png" },
+  "version": "1.0.2",
+  "description": "__MSG_Description__",
+  "background_page": "background.html",
+  "default_locale": "en",
+  "page_action": {
+    "default_icon": "icon19.png",
+    "default_title": "__MSG_DefaultTitle__"
+  },
+  "content_scripts": [
+   {
+     "matches": ["http://*.facebook.com/*",
+                 "https://*.facebook.com/*",
+                 "http://twitter.com/*",
+                 "http://*.twitter.com/*",
+                 "https://twitter.com/*",
+                 "https://*.twitter.com/*",
+                 "http://www.google.com/profiles/*",
+                 "https://www.google.com/profiles/*"],
+     "js": ["translate.js"]
+   }
+  ],
+  "permissions": [
+    "http://ajax.googleapis.com/",
+    "tabs"
+  ],
+  "run_at": "document_end",
+  "options_page": "options.html"
+}
+
