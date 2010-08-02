@@ -1,7 +1,7 @@
 {
   "name": "__MSG_Name__",
   "icons": { "128": "icon128.png" },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "__MSG_Description__",
   "background_page": "background.html",
   "default_locale": "en",
