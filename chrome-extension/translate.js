@@ -39,6 +39,17 @@ if (window.location.hostname.lastIndexOf('twitter.com') != -1) {
     'CSS_UPDATES_UCW_UPDATE_TITLE',
     'CSS_UPDATES_UCW_UPDATE_BODY_TEXT',
   ];
+} else if (window.location.href.lastIndexOf('amplify.com') != -1) {
+  console.log('Preparing for Google Profile translations.');
+  CLASSES_TO_TRANSLATE = [
+    'PostDescription', /* Comments. */
+    'Title Bkmk',
+    'Copy',
+    'FeedItemTS',
+	'Title Slct',
+	'ShortPD',
+	'FullPD',
+  ];
 }
 
 console.log("Trying to hide icon");

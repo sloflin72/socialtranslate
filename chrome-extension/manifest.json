@@ -17,6 +17,10 @@
                  "http://*.twitter.com/*",
                  "https://twitter.com/*",
                  "https://*.twitter.com/*",
+				 "http://amplify.com/*",
+                 "http://*.amplify.com/*",
+                 "https://amplify.com/*",
+                 "https://*.amplify.com/*",
                  "http://www.google.com/profiles/*",
                  "https://www.google.com/profiles/*"],
      "js": ["translate.js"]
