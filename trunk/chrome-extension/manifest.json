@@ -22,7 +22,9 @@
                  "https://amplify.com/*",
                  "https://*.amplify.com/*",
                  "http://www.google.com/profiles/*",
-                 "https://www.google.com/profiles/*"],
+                 "https://www.google.com/profiles/*",
+				 "http://www.orkut.com/*",
+                 "https://www.orkut.com/*"],
      "js": ["translate.js"]
    }
   ],

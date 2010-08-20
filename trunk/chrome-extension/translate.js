@@ -40,7 +40,7 @@ if (window.location.hostname.lastIndexOf('twitter.com') != -1) {
     'CSS_UPDATES_UCW_UPDATE_BODY_TEXT',
   ];
 } else if (window.location.href.lastIndexOf('amplify.com') != -1) {
-  console.log('Preparing for Google Profile translations.');
+  console.log('Preparing for Amplify translations.');
   CLASSES_TO_TRANSLATE = [
     'PostDescription', /* Comments. */
     'Title Bkmk',
@@ -50,8 +50,12 @@ if (window.location.hostname.lastIndexOf('twitter.com') != -1) {
 	'ShortPD',
 	'FullPD',
   ];
-}
-
+}else if (window.location.href.lastIndexOf('www.orkut.com') != -1) {
+  console.log('Preparing for Orkut translations.');
+  CLASSES_TO_TRANSLATE = [
+    'ugc', /* Comments. */
+  ];
+} 
 console.log("Trying to hide icon");
 chrome.extension.sendRequest({action: "hideIcon"}, function(r) {});
 
