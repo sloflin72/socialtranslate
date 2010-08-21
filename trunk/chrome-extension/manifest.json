@@ -21,8 +21,10 @@
                  "http://*.amplify.com/*",
                  "https://amplify.com/*",
                  "https://*.amplify.com/*",
-                 "http://www.google.com/profiles/*",
+				 "http://www.google.com/profiles/*",
                  "https://www.google.com/profiles/*",
+				 "http://www.flickr.com/*",
+				 "https://www.flickr.com/*",
 				 "http://www.orkut.com/*",
                  "https://www.orkut.com/*"],
      "js": ["translate.js"]
