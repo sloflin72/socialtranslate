@@ -1,7 +1,7 @@
 {
   "name": "__MSG_Name__",
   "icons": { "128": "icon128.png" },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "__MSG_Description__",
   "background_page": "background.html",
   "default_locale": "en",
@@ -25,6 +25,12 @@
                  "https://www.google.com/profiles/*",
 				 "http://www.flickr.com/*",
 				 "https://www.flickr.com/*",
+				 "http://www.linkedin.com/*",
+				 "https://www.linkedin.com/*",
+				 "http://mail.google.com/*",
+				 "https://mail.google.com/*",
+				 "http://www.myspace.com/*",
+				 "https://www.myspace.com/*",				 				 
 				 "http://www.orkut.com/*",
                  "https://www.orkut.com/*"],
      "js": ["translate.js"]
