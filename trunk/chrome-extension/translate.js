@@ -46,23 +46,23 @@ if (window.location.hostname.lastIndexOf('twitter.com') != -1) {
     'Title Bkmk',
     'Copy',
     'FeedItemTS',
-	'Title Slct',
-	'ShortPD',
-	'FullPD',
+    'Title Slct',
+    'ShortPD',
+    'FullPD',
   ];
-}else if (window.location.href.lastIndexOf('www.orkut.com') != -1) {
+} else if (window.location.href.lastIndexOf('www.orkut.com') != -1) {
   console.log('Preparing for Orkut translations.');
   CLASSES_TO_TRANSLATE = [
     'ugc', /* Comments. */
   ];
-}else if (window.location.href.lastIndexOf('flickr.com') != -1) {
+} else if (window.location.href.lastIndexOf('flickr.com') != -1) {
   console.log('Preparing for Flicker translations.');
   CLASSES_TO_TRANSLATE = [
     'comment-body', /* Comments. */
-	'photo-desc',
-	'notsowide defer',
-	'act-content',
-	'photo-title',
+    'photo-desc',
+    'notsowide defer',
+    'act-content',
+    'photo-title',
   ];
 }
 
@@ -110,7 +110,7 @@ for (var i in CLASSES_TO_TRANSLATE) {
   var elements = document.getElementsByClassName(clss);
   for (var j = 0; j < elements.length; j++) {
     var text = elements[j].innerHTML;
-	var element = elements[j];
+    var element = elements[j];
     translate(element);
   }
 }
