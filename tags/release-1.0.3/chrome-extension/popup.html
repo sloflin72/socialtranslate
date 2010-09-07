@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>Social Translate</title>
+
+    <script>
+    function toggleReliability() {
+      return function() {
+        var reliable = localStorage["reliable"];
+        if (reliable == "true") {
+          reliable = "false";
+        } else {
+          reliable = "true";
+        }
+        localStorage["reliable"] = reliable;
+      };
+    }
+
+    function reset() {
+      var reliable = localStorage["reliable"];
+      if (!reliable) {
+        reliable = "true";
+        localStorage["reliable"] = reliable;
+      }
+      var link = document.createElement("a");
+      link.onclick = toggleReliability();
+      var textNode;
+      if (reliable == "true") {
+        textNode = document.createTextNode("Try Harder (less accurate)");
+      } else {
+        textNode = document.createTextNode("Be Reliable (more accurate)");
+      }
+      link.appendChild(textNode);
+      document.body.appendChild(link);
+    }
+    </script>
+  </head>
+  <body style="width: 200px" onload="reset()">
+  </body>
+</html>
