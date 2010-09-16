@@ -54,6 +54,8 @@ if (window.location.hostname.lastIndexOf('twitter.com') != -1) {
   console.log('Preparing for Orkut translations.');
   CLASSES_TO_TRANSLATE = [
     'ugc', /* Comments. */
+    'gwt-HTML', /* Comments. */
+
   ];
 } else if (window.location.href.lastIndexOf('flickr.com') != -1) {
   console.log('Preparing for Flicker translations.');
