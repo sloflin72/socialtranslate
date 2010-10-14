@@ -18,6 +18,7 @@ if (window.location.hostname.lastIndexOf('twitter.com') != -1) {
   console.log('Preparing for Twitter translations.');
   CLASSES_TO_TRANSLATE = [
     'entry-content', /* Tweet. */
+    'tweet-text',
   ];
 } else if (window.location.hostname.lastIndexOf('facebook.com') != -1) {
   console.log('Preparing for Facebook translations.');
