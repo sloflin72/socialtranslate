@@ -32,6 +32,7 @@ if (window.location.hostname.lastIndexOf('twitter.com') != -1) {
     'data', /* Event descriptions. */
     'commentContent', /* Comments on events. */
     'text', /* Comments on events. */
+    'messageBody', 
   ];
 } else if (window.location.href.lastIndexOf('www.google.com/profiles') != -1) {
   console.log('Preparing for Google Profile translations.');
